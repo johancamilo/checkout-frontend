@@ -1,0 +1,143 @@
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
+
+.payment-view {
+  max-width: 480px;
+  margin: $spacing-xl auto;
+  padding: 0 $spacing-md;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: $color-primary;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: $spacing-md;
+  font-size: 0.9rem;
+}
+
+.form-section {
+  @include card;
+  border: none;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  legend {
+    font-weight: 700;
+    padding: 0 $spacing-xs;
+  }
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-sm;
+  font-size: 0.9rem;
+  color: $color-text-muted;
+  min-width: 0; // prevents flex children from overflowing their row
+
+  input {
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    font-size: 1rem;
+    color: $color-text;
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: $spacing-sm;
+
+  label {
+    flex: 1;
+    min-width: 0; // without this, inputs keep their browser-default
+                  // intrinsic width and overflow the row on narrow screens
+  }
+
+  // Below ~360px even three shrunk inputs get too cramped to use
+  // comfortably — stack them instead of shrinking further.
+  @media (max-width: 359px) {
+    flex-direction: column;
+  }
+}
+
+.card-number-wrapper {
+  position: relative;
+
+  .card-brand {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: $color-primary;
+    font-weight: 700;
+  }
+}
+
+.disabled-reasons {
+  background: rgba($color-error, 0.06);
+  border: 1px solid rgba($color-error, 0.2);
+  border-radius: $radius-sm;
+  padding: $spacing-sm $spacing-md;
+  margin-bottom: $spacing-sm;
+
+  &__title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: $color-error;
+    margin: 0 0 4px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.85rem;
+    color: $color-error;
+  }
+
+  li {
+    margin-bottom: 2px;
+  }
+}
+
+.field-error {
+  color: $color-error;
+  font-size: 0.8rem;
+}
+
+.field-ok {
+  color: $color-success;
+}
+
+.submit-error {
+  color: $color-error;
+  background: rgba($color-error, 0.08);
+  padding: $spacing-sm;
+  border-radius: $radius-sm;
+  font-size: 0.9rem;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: $radius-md;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &--primary {
+    background: $color-primary;
+    color: white;
+
+    &:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+  }
+}

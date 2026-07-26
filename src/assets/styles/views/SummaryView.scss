@@ -1,0 +1,111 @@
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
+
+.summary-view {
+  max-width: 480px;
+  margin: $spacing-xl auto;
+  padding: 0 $spacing-md;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: $color-primary;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: $spacing-md;
+  font-size: 0.9rem;
+}
+
+.state-msg--error {
+  color: $color-error;
+  text-align: center;
+  padding: $spacing-xl 0;
+}
+
+.summary-card {
+  @include card;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  h2 {
+    font-size: 1rem;
+    margin: 0 0 $spacing-sm;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  p {
+    margin: 4px 0;
+  }
+
+  .muted {
+    color: $color-text-muted;
+    font-size: 0.85rem;
+  }
+}
+
+.product-row {
+  display: flex;
+  gap: $spacing-sm;
+  align-items: center;
+
+  img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: $radius-sm;
+  }
+
+  &__name {
+    font-weight: 700;
+  }
+
+  &__desc {
+    color: $color-text-muted;
+    font-size: 0.85rem;
+  }
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+
+  &--total {
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-top: 1px solid $color-border;
+    margin-top: $spacing-xs;
+    padding-top: $spacing-sm;
+  }
+}
+
+.submit-error {
+  color: $color-error;
+  background: rgba($color-error, 0.08);
+  padding: $spacing-sm;
+  border-radius: $radius-sm;
+  font-size: 0.9rem;
+  margin-bottom: $spacing-sm;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: $radius-md;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &--primary {
+    background: $color-primary;
+    color: white;
+
+    &:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+  }
+}

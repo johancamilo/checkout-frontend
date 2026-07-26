@@ -1,0 +1,77 @@
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
+
+.result-view {
+  max-width: 480px;
+  margin: $spacing-xl auto;
+  padding: 0 $spacing-md;
+}
+
+.state-msg {
+  text-align: center;
+  padding: $spacing-xl 0;
+  color: $color-text-muted;
+}
+
+.result-card {
+  @include card;
+  text-align: center;
+  padding: $spacing-xl $spacing-md;
+
+  .icon {
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 auto $spacing-md;
+    color: white;
+  }
+
+  .message {
+    color: $color-text-muted;
+    margin-bottom: $spacing-md;
+  }
+
+  &--approved .icon {
+    background: $color-success;
+  }
+
+  &--declined .icon,
+  &--error .icon {
+    background: $color-error;
+  }
+}
+
+.details {
+  border-top: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
+  padding: $spacing-sm 0;
+  margin-bottom: $spacing-md;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 4px 0;
+
+  span:first-child {
+    color: $color-text-muted;
+  }
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: $radius-md;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &--primary {
+    background: $color-primary;
+    color: white;
+  }
+}
