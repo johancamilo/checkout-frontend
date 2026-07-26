@@ -8,7 +8,7 @@
         :alt="product.name"
         class="product-card__image"
         width="600"
-        height="400"
+        height="200"
         loading="lazy"
       />
       <h1>{{ product.name }}</h1>

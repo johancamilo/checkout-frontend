@@ -4,7 +4,17 @@
 
     <h1>Payment and delivery details</h1>
 
-    <form @submit.prevent="handleSubmit">
+    <div class="payment-view__layout">
+      <CardPreview
+        class="payment-view__card-preview"
+        :number="cardNumberDisplay"
+        :card-holder="card.cardHolder"
+        :exp-month="card.expMonth"
+        :exp-year="card.expYear"
+        :brand="cardBrand"
+      />
+
+      <form class="payment-view__form" @submit.prevent="handleSubmit">
       <fieldset class="form-section">
         <legend>Card</legend>
 
@@ -190,15 +200,18 @@
         {{ loading ? 'Processing...' : 'Continue to summary' }}
       </button>
     </form>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isValidLuhn, detectCardBrand, isFutureExpiry, formatCardNumber } from '@/services/card-validators';
+import CardPreview from '@/components/CardPreview.vue';
 
 export default {
   name: 'PaymentView',
+  components: { CardPreview },
   data() {
     return {
       card: { number: '', cvc: '', expMonth: '', expYear: '', cardHolder: '' },

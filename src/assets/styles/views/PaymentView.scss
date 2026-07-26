@@ -5,6 +5,34 @@
   max-width: 480px;
   margin: $spacing-xl auto;
   padding: 0 $spacing-md;
+
+  @media (min-width: $breakpoint-tablet) {
+    max-width: 880px;
+  }
+}
+
+.payment-view__layout {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  @media (min-width: $breakpoint-tablet) {
+    flex-direction: row-reverse;
+    align-items: flex-start;
+  }
+}
+
+.payment-view__card-preview {
+  @media (min-width: $breakpoint-tablet) {
+    position: sticky;
+    top: $spacing-lg;
+    flex: 0 0 340px;
+  }
+}
+
+.payment-view__form {
+  flex: 1;
+  min-width: 0;
 }
 
 .back-link {

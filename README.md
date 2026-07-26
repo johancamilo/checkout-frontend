@@ -134,24 +134,28 @@ What's covered:
 > report locally before submitting — coverage numbers should be confirmed
 > against your own environment.
 
-------------------------|---------|----------|---------|---------|-------------------
-File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
-------------------------|---------|----------|---------|---------|-------------------
-All files               |   99.13 |    98.12 |   96.92 |   99.09 |                   
- services               |     100 |      100 |     100 |     100 |                   
-  card-validators.js    |     100 |      100 |     100 |     100 |                   
-  checkout.service.js   |     100 |      100 |     100 |     100 |                   
- store/modules/checkout |     100 |      100 |     100 |     100 |                   
-  actions.js            |     100 |      100 |     100 |     100 |                   
-  getters.js            |     100 |      100 |     100 |     100 |                   
-  mutations.js          |     100 |      100 |     100 |     100 |                   
-  state.js              |     100 |      100 |     100 |     100 |                   
- views                  |   98.37 |     97.7 |      95 |   98.37 |                   
-  PaymentView.vue       |   98.36 |    99.36 |   96.87 |   98.36 | 317               
-  ProductView.vue       |     100 |      100 |     100 |     100 |                   
-  ResultView.vue        |   94.44 |    85.71 |   66.66 |   94.44 | 110               
-  SummaryView.vue       |     100 |    94.11 |     100 |     100 | 144,148           
-------------------------|---------|----------|---------|---------|-------------------
+------------------------|---------|----------|---------|---------|---------------------
+File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s   
+------------------------|---------|----------|---------|---------|---------------------
+All files               |   98.18 |    96.05 |   97.64 |   98.11 |                     
+ components             |     100 |    86.36 |     100 |     100 |                     
+  CardPreview.vue       |     100 |    86.36 |     100 |     100 | 110                 
+ services               |     100 |      100 |     100 |     100 |                     
+  card-validators.js    |     100 |      100 |     100 |     100 |                     
+  checkout.service.js   |     100 |      100 |     100 |     100 |                     
+ store/modules/checkout |     100 |      100 |     100 |     100 |                     
+  actions.js            |     100 |      100 |     100 |     100 |                     
+  getters.js            |     100 |      100 |     100 |     100 |                     
+  mutations.js          |     100 |      100 |     100 |     100 |                     
+  state.js              |     100 |      100 |     100 |     100 |                     
+ utils                  |     100 |      100 |     100 |     100 |                     
+  format.js             |     100 |      100 |     100 |     100 |                     
+ views                  |   96.85 |    96.12 |   96.29 |    96.8 |                     
+  PaymentView.vue       |   96.12 |    96.87 |   97.82 |   96.03 | 115,120,125,136,339 
+  ProductView.vue       |     100 |      100 |     100 |     100 |                     
+  ResultView.vue        |   94.44 |    85.71 |   66.66 |   94.44 | 111                 
+  SummaryView.vue       |     100 |    94.11 |     100 |     100 | 148,152             
+------------------------|---------|----------|---------|---------|---------------------
 
 ## Responsive Design
 
