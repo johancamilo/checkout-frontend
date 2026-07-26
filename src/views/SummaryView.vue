@@ -12,7 +12,7 @@
       <section class="summary-card">
         <h2>Product</h2>
         <div class="product-row">
-          <img :src="product.imageUrl" :alt="product.name" />
+          <img :src="product.imageUrl" :alt="product.name" width="64" height="64" loading="lazy" />
           <div>
             <p class="product-row__name">{{ product.name }}</p>
             <p class="product-row__desc">{{ product.description }}</p>
@@ -60,6 +60,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { formatMoney } from '@/utils/format';
 
 export default {
   name: 'SummaryView',
@@ -78,13 +79,7 @@ export default {
   },
   methods: {
     ...mapActions('checkout', ['confirmPayment']),
-    formatMoney(cents) {
-      return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-      }).format(cents / 100);
-    },
+    formatMoney,
     goBack() {
       this.$router.push({ name: 'payment', params: { productId: this.$route.params.productId } });
     },

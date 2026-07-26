@@ -238,8 +238,10 @@ export default {
           : 'Enter the card number';
       }
 
-      if (this.card.cvc && this.card.cvc.length < 3) {
-        errs.cvc = 'The CVC must have 3 or 4 digits';
+      if (this.card.cvc && !/^\d{3,4}$/.test(this.card.cvc)) {
+        errs.cvc = this.card.cvc.length < 3 || this.card.cvc.length > 4
+          ? 'The CVC must have 3 or 4 digits'
+          : 'The CVC must contain only digits';
       } else if (!this.card.cvc) {
         errs.cvc = 'Enter the CVC';
       }

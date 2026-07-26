@@ -3,7 +3,14 @@
     <div v-if="loading" class="state-msg">Loading product...</div>
     <div v-else-if="error" class="state-msg state-msg--error">{{ error }}</div>
     <div v-else-if="product" class="product-card">
-      <img :src="product.imageUrl" :alt="product.name" class="product-card__image" />
+      <img
+        :src="product.imageUrl"
+        :alt="product.name"
+        class="product-card__image"
+        width="600"
+        height="400"
+        loading="lazy"
+      />
       <h1>{{ product.name }}</h1>
       <p class="product-card__description">{{ product.description }}</p>
       <p class="product-card__price">{{ formattedPrice }}</p>
@@ -19,6 +26,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { formatMoney } from '@/utils/format';
 
 export default {
   name: 'ProductView',
@@ -26,11 +34,7 @@ export default {
     ...mapState('checkout', ['product', 'loading', 'error']),
     formattedPrice() {
       if (!this.product) return '';
-      return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-      }).format(this.product.priceInCents / 100);
+      return formatMoney(this.product.priceInCents);
     },
   },
   created() {

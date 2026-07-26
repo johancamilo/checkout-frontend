@@ -128,6 +128,17 @@ describe('PaymentView', () => {
     expect(wrapper.find('.field-error').text()).toBe('The expiration date is invalid or has expired');
   });
 
+  it('rejects a CVC with non-numeric characters even if the length is right', async () => {
+    const store = createTestStore();
+    const wrapper = mountView({ store });
+
+    wrapper.vm.card.cvc = 'ab1';
+    wrapper.vm.touched.cvc = true;
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.errors.cvc).toBe('The CVC must contain only digits');
+  });
+
   it('does not submit when the form is invalid', async () => {
     const createTransaction = jest.fn();
     const store = createTestStore({ createTransaction });

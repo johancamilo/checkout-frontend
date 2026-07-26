@@ -182,7 +182,7 @@ cd ../infraestructure
 npx cdk deploy FrontendStack-dev
 ```
 
-**Live URL:** `<add-your-cloudfront-url-here>`
+**Live URL:** https://d30cgmsiz5yhgs.cloudfront.net
 
 ## Project Structure
 

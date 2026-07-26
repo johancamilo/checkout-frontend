@@ -1,8 +1,11 @@
 import { checkoutService } from '@/services/checkout.service';
 
-// Flat delivery fee, in cents. Frontend-defined for this technical test
-// (the backend accepts whatever value the client sends — see
-// Transaction.create(), which only validates it's not negative).
+// Flat delivery fee, in cents. Kept in sync with the backend's own fixed
+// DELIVERY_FEE_IN_CENTS constant (application/use-cases/create-transaction.use-case.ts)
+// purely so the number shown here matches what's actually charged. The
+// backend does NOT trust this value from the request body anymore — it
+// always computes the charge from its own server-side constant, so a
+// tampered request can't get free delivery.
 const DELIVERY_FEE_IN_CENTS = 800000;
 
 export default {

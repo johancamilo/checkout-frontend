@@ -29,6 +29,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { formatMoney } from '@/utils/format';
 
 export default {
   name: 'ResultView',
@@ -57,13 +58,7 @@ export default {
   },
   methods: {
     ...mapActions('checkout', ['resetCheckout']),
-    formatMoney(cents) {
-      return new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0,
-      }).format(cents / 100);
-    },
+    formatMoney,
     handleContinue() {
       const productId = this.$route.params.productId;
       this.resetCheckout();
