@@ -1,15 +1,15 @@
 <template>
   <div class="payment-view">
-    <button class="back-link" @click="goBack">&larr; Volver al producto</button>
+    <button class="back-link" @click="goBack">&larr; Back to product</button>
 
-    <h1>Datos de pago y entrega</h1>
+    <h1>Payment and delivery details</h1>
 
     <form @submit.prevent="handleSubmit">
       <fieldset class="form-section">
-        <legend>Tarjeta</legend>
+        <legend>Card</legend>
 
         <label>
-          Número de tarjeta
+          Card number
           <div class="card-number-wrapper">
             <input
               v-model="cardNumberDisplay"
@@ -28,7 +28,7 @@
 
         <div class="form-row">
           <label>
-            Vence (MM)
+            Expires (MM)
             <input
               v-model="card.expMonth"
               type="text"
@@ -41,7 +41,7 @@
             />
           </label>
           <label>
-            Vence (AA)
+            Expires (YY)
             <input
               v-model="card.expYear"
               type="text"
@@ -70,11 +70,11 @@
         <span v-if="touched.cvc && errors.cvc" class="field-error">{{ errors.cvc }}</span>
 
         <label>
-          Nombre del titular
+          Cardholder name
           <input
             v-model="card.cardHolder"
             type="text"
-            placeholder="Como aparece en la tarjeta (mín. 5 caracteres)"
+            placeholder="As shown on the card (min. 5 characters)"
             autocomplete="off"
             @blur="touched.cardHolder = true"
           />
@@ -83,14 +83,14 @@
       </fieldset>
 
       <fieldset class="form-section">
-        <legend>Datos del comprador</legend>
+        <legend>Buyer details</legend>
 
         <label>
-          Nombre completo
+          Full name
           <input
             v-model="customer.fullName"
             type="text"
-            placeholder="Juan Pérez"
+            placeholder="John Doe"
             @blur="touched.fullName = true"
           />
         </label>
@@ -108,7 +108,7 @@
         <span v-if="touched.email && errors.email" class="field-error">{{ errors.email }}</span>
 
         <label>
-          Teléfono
+          Phone number
           <input
             v-model="customer.phoneNumber"
             type="tel"
@@ -119,7 +119,7 @@
         <span v-if="touched.phoneNumber && errors.phoneNumber" class="field-error">{{ errors.phoneNumber }}</span>
 
         <label>
-          Documento
+          Document number
           <input
             v-model="customer.documentNumber"
             type="text"
@@ -131,14 +131,14 @@
       </fieldset>
 
       <fieldset class="form-section">
-        <legend>Dirección de entrega</legend>
+        <legend>Delivery address</legend>
 
         <label>
-          Dirección
+          Address
           <input
             v-model="delivery.addressLine"
             type="text"
-            placeholder="Calle 123 #45-67"
+            placeholder="123 Main Street"
             @blur="touched.addressLine = true"
           />
         </label>
@@ -146,20 +146,20 @@
 
         <div class="form-row">
           <label>
-            Ciudad
+            City
             <input
               v-model="delivery.city"
               type="text"
-              placeholder="Bogotá"
+              placeholder="New York"
               @blur="touched.city = true"
             />
           </label>
           <label>
-            Región/Departamento
+            Region/State
             <input
               v-model="delivery.region"
               type="text"
-              placeholder="Cundinamarca"
+              placeholder="New York"
               @blur="touched.region = true"
             />
           </label>
@@ -168,7 +168,7 @@
         <span v-if="touched.region && errors.region" class="field-error">{{ errors.region }}</span>
 
         <label>
-          Código postal (opcional)
+          Postal code (optional)
           <input v-model="delivery.postalCode" type="text" placeholder="110111" />
         </label>
       </fieldset>
@@ -178,7 +178,7 @@
            actually answers "why is the button disabled?" without requiring
            the user to hunt field by field. -->
       <div v-if="anyTouched && disabledReasons.length" class="disabled-reasons">
-        <p class="disabled-reasons__title">Para continuar, corregí:</p>
+        <p class="disabled-reasons__title">To continue, fix:</p>
         <ul>
           <li v-for="reason in disabledReasons" :key="reason">{{ reason }}</li>
         </ul>
@@ -187,7 +187,7 @@
       <p v-if="submitError" class="submit-error">{{ submitError }}</p>
 
       <button type="submit" class="btn btn--primary" :disabled="!isFormValid || loading">
-        {{ loading ? 'Procesando...' : 'Continuar al resumen' }}
+        {{ loading ? 'Processing...' : 'Continue to summary' }}
       </button>
     </form>
   </div>
@@ -234,64 +234,64 @@ export default {
 
       if (!isValidLuhn(this.card.number)) {
         errs.number = this.card.number
-          ? 'Número de tarjeta inválido'
-          : 'Ingresá el número de tarjeta';
+          ? 'Invalid card number'
+          : 'Enter the card number';
       }
 
       if (this.card.cvc && this.card.cvc.length < 3) {
-        errs.cvc = 'El CVC debe tener 3 o 4 dígitos';
+        errs.cvc = 'The CVC must have 3 or 4 digits';
       } else if (!this.card.cvc) {
-        errs.cvc = 'Ingresá el CVC';
+        errs.cvc = 'Enter the CVC';
       }
 
       if (this.card.expMonth || this.card.expYear) {
         if (!/^\d{2}$/.test(this.card.expMonth) || !/^\d{2}$/.test(this.card.expYear)) {
-          errs.expiry = 'Mes y año deben tener 2 dígitos (ej: 01, 12)';
+          errs.expiry = 'Month and year must have 2 digits (e.g. 01, 12)';
         } else if (!isFutureExpiry(this.card.expMonth, this.card.expYear)) {
-          errs.expiry = 'La fecha de expiración es inválida o ya venció';
+          errs.expiry = 'The expiration date is invalid or has expired';
         }
       } else {
-        errs.expiry = 'Ingresá el mes y año de expiración';
+        errs.expiry = 'Enter the expiration month and year';
       }
 
       if (this.card.cardHolder.trim().length > 0 && this.card.cardHolder.trim().length < 5) {
-        errs.cardHolder = 'El nombre del titular debe tener al menos 5 caracteres';
+        errs.cardHolder = 'The cardholder name must have at least 5 characters';
       } else if (!this.card.cardHolder.trim()) {
-        errs.cardHolder = 'Ingresá el nombre del titular';
+        errs.cardHolder = 'Enter the cardholder name';
       }
 
       if (this.customer.fullName.trim().length > 0 && this.customer.fullName.trim().length < 3) {
-        errs.fullName = 'El nombre debe tener al menos 3 caracteres';
+        errs.fullName = 'The name must have at least 3 characters';
       } else if (!this.customer.fullName.trim()) {
-        errs.fullName = 'Ingresá tu nombre completo';
+        errs.fullName = 'Enter your full name';
       }
 
       if (this.customer.email && !/\S+@\S+\.\S+/.test(this.customer.email)) {
-        errs.email = 'Ingresá un email válido';
+        errs.email = 'Enter a valid email address';
       } else if (!this.customer.email) {
-        errs.email = 'Ingresá tu email';
+        errs.email = 'Enter your email address';
       }
 
       if (!this.customer.phoneNumber.trim()) {
-        errs.phoneNumber = 'Ingresá tu teléfono';
+        errs.phoneNumber = 'Enter your phone number';
       }
 
       if (!this.customer.documentNumber.trim()) {
-        errs.documentNumber = 'Ingresá tu número de documento';
+        errs.documentNumber = 'Enter your document number';
       }
 
       if (this.delivery.addressLine.trim().length > 0 && this.delivery.addressLine.trim().length < 5) {
-        errs.addressLine = 'La dirección debe tener al menos 5 caracteres';
+        errs.addressLine = 'The address must have at least 5 characters';
       } else if (!this.delivery.addressLine.trim()) {
-        errs.addressLine = 'Ingresá la dirección de entrega';
+        errs.addressLine = 'Enter the delivery address';
       }
 
       if (!this.delivery.city.trim()) {
-        errs.city = 'Ingresá la ciudad';
+        errs.city = 'Enter the city';
       }
 
       if (!this.delivery.region.trim()) {
-        errs.region = 'Ingresá la región/departamento';
+        errs.region = 'Enter the region/state';
       }
 
       return errs;
@@ -351,7 +351,7 @@ export default {
           params: { productId: this.$route.params.productId },
         });
       } catch (err) {
-        this.submitError = err.response?.data?.message ?? 'No se pudo crear la transacción';
+        this.submitError = err.response?.data?.message ?? 'The transaction could not be created';
       }
     },
   },

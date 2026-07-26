@@ -1,16 +1,16 @@
 <template>
   <div class="summary-view">
-    <button class="back-link" @click="goBack">&larr; Volver a editar datos</button>
+    <button class="back-link" @click="goBack">&larr; Back to edit details</button>
 
-    <h1>Resumen de tu compra</h1>
+    <h1>Order summary</h1>
 
     <div v-if="!product || !transaction" class="state-msg state-msg--error">
-      No hay una transacción en curso. Volvé a empezar desde el producto.
+      There is no transaction in progress. Start again from the product.
     </div>
 
     <template v-else>
       <section class="summary-card">
-        <h2>Producto</h2>
+        <h2>Product</h2>
         <div class="product-row">
           <img :src="product.imageUrl" :alt="product.name" />
           <div>
@@ -21,22 +21,26 @@
       </section>
 
       <section class="summary-card">
-        <h2>Entrega</h2>
+        <h2>Delivery</h2>
         <p>{{ customer.fullName }}</p>
         <p>{{ delivery.addressLine }}</p>
         <p>{{ delivery.city }}, {{ delivery.region }}</p>
-        <p v-if="delivery.postalCode">CP {{ delivery.postalCode }}</p>
+        <p v-if="delivery.postalCode">Postal code {{ delivery.postalCode }}</p>
         <p class="muted">{{ customer.email }} · {{ customer.phoneNumber }}</p>
       </section>
 
       <section class="summary-card">
-        <h2>Pago</h2>
+        <h2>Payment</h2>
         <div class="totals-row">
-          <span>Producto</span>
-          <span>{{ formatMoney(transaction.totalAmountInCents - transaction.deliveryFeeInCents) }}</span>
+          <span>Product</span>
+          <span>{{ formatMoney(transaction.productAmountInCents) }}</span>
         </div>
         <div class="totals-row">
-          <span>Envío</span>
+          <span>Fee base</span>
+          <span>{{ formatMoney(transaction.baseFeeInCents) }}</span>
+        </div>
+        <div class="totals-row">
+          <span>Delivery</span>
           <span>{{ formatMoney(transaction.deliveryFeeInCents) }}</span>
         </div>
         <div class="totals-row totals-row--total">
@@ -48,7 +52,7 @@
       <p v-if="submitError" class="submit-error">{{ submitError }}</p>
 
       <button class="btn btn--primary" :disabled="loading" @click="handleConfirm">
-        {{ loading ? 'Procesando pago...' : 'Confirmar y pagar' }}
+        {{ loading ? 'Processing payment...' : 'Confirm and pay' }}
       </button>
     </template>
   </div>
@@ -90,7 +94,7 @@ export default {
         await this.confirmPayment(this.card);
         this.$router.push({ name: 'result', params: { productId: this.$route.params.productId } });
       } catch (err) {
-        this.submitError = err.response?.data?.message ?? 'No se pudo procesar el pago';
+        this.submitError = err.response?.data?.message ?? 'The payment could not be processed';
       }
     },
   },

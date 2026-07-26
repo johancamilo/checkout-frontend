@@ -47,16 +47,17 @@ async function fillValidForm(wrapper) {
   await wrapper.find('input[placeholder="12"]').setValue('12'); // expMonth
   await wrapper.find('input[placeholder="29"]').setValue('99'); // expYear
   await wrapper.find('input[placeholder="123"]').setValue('123'); // cvc
-  await wrapper.find('input[placeholder="Como aparece en la tarjeta"]').setValue('Jane Doe');
+  await wrapper.find('input[placeholder="As shown on the card (min. 5 characters)"]').setValue('Jane Doe');
 
-  await wrapper.find('input[placeholder="Juan Pérez"]').setValue('Jane Doe');
+  await wrapper.find('input[placeholder="John Doe"]').setValue('Jane Doe');
   await wrapper.find('input[placeholder="juan@email.com"]').setValue('jane@example.com');
   await wrapper.find('input[placeholder="3001234567"]').setValue('3001234567');
   await wrapper.find('input[placeholder="1234567890"]').setValue('123456789');
 
-  await wrapper.find('input[placeholder="Calle 123 #45-67"]').setValue('Calle 123 #45-67');
-  await wrapper.find('input[placeholder="Bogotá"]').setValue('Bogota');
-  await wrapper.find('input[placeholder="Cundinamarca"]').setValue('Cundinamarca');
+  await wrapper.find('input[placeholder="123 Main Street"]').setValue('123 Main Street');
+  const newYorkInputs = wrapper.findAll('input[placeholder="New York"]');
+  await newYorkInputs[0].setValue('New York');
+  await newYorkInputs[1].setValue('New York');
   await wrapper.find('input[placeholder="110111"]').setValue('110111');
 
   await wrapper.vm.$nextTick();
@@ -113,7 +114,7 @@ describe('PaymentView', () => {
     wrapper.vm.touched.number = true;
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.find('.field-error').text()).toBe('Número de tarjeta inválido');
+    expect(wrapper.find('.field-error').text()).toBe('Invalid card number');
   });
 
   it('shows a validation error for an expired card once the expiry is touched', async () => {
@@ -125,7 +126,7 @@ describe('PaymentView', () => {
     wrapper.vm.touched.expiry = true;
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.find('.field-error').text()).toBe('La tarjeta está vencida o la fecha es inválida');
+    expect(wrapper.find('.field-error').text()).toBe('The expiration date is invalid or has expired');
   });
 
   it('does not submit when the form is invalid', async () => {
@@ -195,10 +196,10 @@ describe('PaymentView', () => {
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.find('.submit-error').text()).toBe('No se pudo crear la transacción');
+    expect(wrapper.find('.submit-error').text()).toBe('The transaction could not be created');
   });
 
-  it('navigates back to the product view when "Volver al producto" is clicked', async () => {
+  it('navigates back to the product view when "Back to product" is clicked', async () => {
     const store = createTestStore();
     const routerPush = vi.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });

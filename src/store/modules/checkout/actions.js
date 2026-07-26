@@ -14,7 +14,7 @@ export default {
       commit('SET_PRODUCT', product);
       return product;
     } catch (err) {
-      commit('SET_ERROR', err.response?.data?.message ?? 'Error al obtener el producto');
+      commit('SET_ERROR', err.response?.data?.message ?? 'Error getting the product');
       throw err;
     } finally {
       commit('SET_LOADING', false);
@@ -37,7 +37,7 @@ export default {
       commit('SET_TRANSACTION', transaction);
       return transaction;
     } catch (err) {
-      commit('SET_ERROR', err.response?.data?.message ?? 'Error al crear la transacción');
+      commit('SET_ERROR', err.response?.data?.message ?? 'Error creating the transaction');
       throw err;
     } finally {
       commit('SET_LOADING', false);
@@ -52,7 +52,7 @@ export default {
       commit('SET_TRANSACTION', result);
       return result;
     } catch (err) {
-      commit('SET_ERROR', err.response?.data?.message ?? 'Error al confirmar el pago');
+      commit('SET_ERROR', err.response?.data?.message ?? 'Error confirming the payment');
       throw err;
     } finally {
       commit('SET_LOADING', false);

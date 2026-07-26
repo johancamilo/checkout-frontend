@@ -55,8 +55,8 @@ describe('ResultView', () => {
 
     expect(wrapper.find('.result-card').classes()).toContain('result-card--approved');
     expect(wrapper.find('.icon').text()).toBe('✓');
-    expect(wrapper.find('h1').text()).toBe('¡Pago aprobado!');
-    expect(wrapper.find('.message').text()).toBe('Tu pedido fue confirmado y va en camino.');
+    expect(wrapper.find('h1').text()).toBe('Payment approved!');
+    expect(wrapper.find('.message').text()).toBe('Your order was confirmed and is on its way.');
     expect(wrapper.text()).toContain('tx-1');
     expect(wrapper.text()).toContain(money(53800000));
   });
@@ -68,8 +68,8 @@ describe('ResultView', () => {
 
     expect(wrapper.find('.result-card').classes()).toContain('result-card--declined');
     expect(wrapper.find('.icon').text()).toBe('✕');
-    expect(wrapper.find('h1').text()).toBe('Pago rechazado');
-    expect(wrapper.find('.message').text()).toBe('El banco rechazó la transacción. Intentá con otra tarjeta.');
+    expect(wrapper.find('h1').text()).toBe('Payment declined');
+    expect(wrapper.find('.message').text()).toBe('The bank declined the transaction. Try another card.');
   });
 
   it('renders the ERROR state correctly', () => {
@@ -79,7 +79,7 @@ describe('ResultView', () => {
 
     expect(wrapper.find('.result-card').classes()).toContain('result-card--error');
     expect(wrapper.find('.icon').text()).toBe('!');
-    expect(wrapper.find('h1').text()).toBe('Algo salió mal');
+    expect(wrapper.find('h1').text()).toBe('Something went wrong');
   });
 
   it('defaults to the error visuals for an unrecognized/missing status', () => {
@@ -88,11 +88,11 @@ describe('ResultView', () => {
     const wrapper = mountView({ store });
 
     expect(wrapper.find('.icon').text()).toBe('!');
-    expect(wrapper.find('h1').text()).toBe('Algo salió mal');
-    expect(wrapper.find('.message').text()).toBe('Ocurrió un error procesando el pago.');
+    expect(wrapper.find('h1').text()).toBe('Something went wrong');
+    expect(wrapper.find('.message').text()).toBe('An error occurred while processing the payment.');
   });
 
-  it('resets the checkout and navigates back to the product page on "Volver al producto"', async () => {
+  it('resets the checkout and navigates back to the product page on "Back to product"', async () => {
     const transaction = { transactionId: 'tx-1', status: 'APPROVED', totalAmountInCents: 1000 };
     const resetCheckout = vi.fn();
     const store = createTestStore({ resetCheckout, state: { transaction } });

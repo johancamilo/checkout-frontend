@@ -179,10 +179,10 @@ describe('SummaryView', () => {
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.find('.submit-error').text()).toBe('No se pudo procesar el pago');
+    expect(wrapper.find('.submit-error').text()).toBe('The payment could not be processed');
   });
 
-  it('navigates back to the payment view when "Volver a editar datos" is clicked', async () => {
+  it('navigates back to the payment view when "Back to edit details" is clicked', async () => {
     const store = createTestStore({
       state: { card: CARD, transaction: TRANSACTION, product: PRODUCT, customer: CUSTOMER, delivery: DELIVERY },
     });

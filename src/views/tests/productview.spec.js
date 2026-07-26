@@ -52,7 +52,7 @@ describe('ProductView', () => {
     const store = createTestStore({ state: { loading: true } });
     const wrapper = mountView({ store });
 
-    expect(wrapper.find('.state-msg').text()).toBe('Cargando producto...');
+    expect(wrapper.find('.state-msg').text()).toBe('Loading product...');
     expect(wrapper.find('.product-card').exists()).toBe(false);
   });
 
@@ -84,11 +84,11 @@ describe('ProductView', () => {
     expect(wrapper.find('h1').text()).toBe(product.name);
     expect(wrapper.find('.product-card__description').text()).toBe(product.description);
     expect(wrapper.find('.product-card__price').text()).toBe(expectedPrice);
-    expect(wrapper.find('.product-card__stock').text()).toBe('8 disponibles');
+    expect(wrapper.find('.product-card__stock').text()).toBe('8 available');
     expect(wrapper.find('img').attributes('src')).toBe(product.imageUrl);
   });
 
-  it('shows "Agotado" and disables the buy button when stock is 0', () => {
+  it('shows "Out of stock" and disables the buy button when stock is 0', () => {
     const product = {
       id: 'prod-002',
       name: 'Sold out item',
@@ -100,12 +100,12 @@ describe('ProductView', () => {
     const store = createTestStore({ state: { product } });
     const wrapper = mountView({ store });
 
-    expect(wrapper.find('.product-card__stock').text()).toBe('Agotado');
+    expect(wrapper.find('.product-card__stock').text()).toBe('Out of stock');
     expect(wrapper.find('.product-card__stock--empty').exists()).toBe(true);
     expect(wrapper.find('button.btn--primary').element.disabled).toBe(true);
   });
 
-  it('navigates to the payment view with the current productId when "Comprar" is clicked', async () => {
+  it('navigates to the payment view with the current productId when "Buy now" is clicked', async () => {
     const product = {
       id: 'prod-002',
       name: 'In stock item',

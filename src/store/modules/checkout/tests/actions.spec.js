@@ -51,7 +51,7 @@ describe('checkout actions', () => {
       checkoutService.getProduct.mockRejectedValue(new Error('network down'));
 
       await expect(actions.fetchProduct({ commit }, 'prod-999')).rejects.toBeDefined();
-      expect(commit).toHaveBeenCalledWith('SET_ERROR', 'Error al obtener el producto');
+      expect(commit).toHaveBeenCalledWith('SET_ERROR', 'Error getting the product');
     });
   });
 
@@ -63,7 +63,7 @@ describe('checkout actions', () => {
       checkoutService.createTransaction.mockResolvedValue(transaction);
 
       const customer = { fullName: 'Johan Medina' };
-      const delivery = { city: 'Bogotá' };
+      const delivery = { city: 'New York' };
 
       const result = await actions.createTransaction(
         { commit, state },
@@ -106,7 +106,7 @@ describe('checkout actions', () => {
       await expect(
         actions.createTransaction({ commit, state }, { customer: {}, delivery: {}, quantity: 1 }),
       ).rejects.toBeDefined();
-      expect(commit).toHaveBeenCalledWith('SET_ERROR', 'Error al crear la transacción');
+      expect(commit).toHaveBeenCalledWith('SET_ERROR', 'Error creating the transaction');
     });
   });
 
@@ -146,7 +146,7 @@ describe('checkout actions', () => {
       await expect(
         actions.confirmPayment({ commit, state }, {}),
       ).rejects.toBeDefined();
-      expect(commit).toHaveBeenCalledWith('SET_ERROR', 'Error al confirmar el pago');
+      expect(commit).toHaveBeenCalledWith('SET_ERROR', 'Error confirming the payment');
     });
   });
 

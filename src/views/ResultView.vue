@@ -1,7 +1,7 @@
 <template>
   <div class="result-view">
     <div v-if="!transaction" class="state-msg">
-      No hay información de transacción. <router-link to="/">Volver al inicio</router-link>
+      No transaction information is available. <router-link to="/">Back to home</router-link>
     </div>
 
     <div v-else class="result-card" :class="resultClass">
@@ -11,7 +11,7 @@
 
       <div class="details">
         <div class="detail-row">
-          <span>Referencia</span>
+          <span>Reference</span>
           <span>{{ transaction.transactionId }}</span>
         </div>
         <div class="detail-row">
@@ -21,7 +21,7 @@
       </div>
 
       <button class="btn btn--primary" @click="handleContinue">
-        Volver al producto
+        Back to product
       </button>
     </div>
   </div>
@@ -42,17 +42,17 @@ export default {
     },
     resultTitle() {
       return {
-        APPROVED: '¡Pago aprobado!',
-        DECLINED: 'Pago rechazado',
-        ERROR: 'Algo salió mal',
-      }[this.transaction?.status] ?? 'Algo salió mal';
+        APPROVED: 'Payment approved!',
+        DECLINED: 'Payment declined',
+        ERROR: 'Something went wrong',
+      }[this.transaction?.status] ?? 'Something went wrong';
     },
     resultMessage() {
       return {
-        APPROVED: 'Tu pedido fue confirmado y va en camino.',
-        DECLINED: 'El banco rechazó la transacción. Intentá con otra tarjeta.',
-        ERROR: 'Ocurrió un error procesando el pago. Intentá de nuevo.',
-      }[this.transaction?.status] ?? 'Ocurrió un error procesando el pago.';
+        APPROVED: 'Your order was confirmed and is on its way.',
+        DECLINED: 'The bank declined the transaction. Try another card.',
+        ERROR: 'An error occurred while processing the payment. Please try again.',
+      }[this.transaction?.status] ?? 'An error occurred while processing the payment.';
     },
   },
   methods: {

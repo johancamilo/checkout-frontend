@@ -180,5 +180,5 @@ src/
 
 ## Related Repositories
 
-- **Backend (NestJS + Hexagonal + ROP API):** `<add-your-backend-repo-url-here>`
-- **Infrastructure (AWS CDK):** `<add-your-infra-repo-url-here>`
+- **Backend (NestJS + Hexagonal + ROP API):** https://github.com/johancamilo/checkout-backend
+- **Infrastructure (AWS CDK):** https://github.com/johancamilo/checkout-infraestructure

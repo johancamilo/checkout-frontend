@@ -22,7 +22,7 @@ const routes = [
     component: () => import('@/views/ResultView.vue'),
   },
   {
-    // Ruta raíz redirige a un producto default (ajustar id real de seed)
+    // Root route redirects to a default product (adjust to the actual seed ID)
     path: '/',
     redirect: '/product/prod-002',
   },

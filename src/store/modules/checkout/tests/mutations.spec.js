@@ -29,7 +29,7 @@ describe('checkout mutations', () => {
   });
 
   it('SET_DELIVERY stores the delivery info and persists it', () => {
-    const delivery = { addressLine: 'Calle 123', city: 'Bogotá', region: 'Bogota' };
+    const delivery = { addressLine: '123 Main Street', city: 'New York', region: 'New York' };
     mutations.SET_DELIVERY(localState, delivery);
 
     expect(localState.delivery).toEqual(delivery);
@@ -68,7 +68,7 @@ describe('checkout mutations', () => {
   it('RESET_CHECKOUT clears customer, delivery, transaction, card and error, but keeps product', () => {
     localState.product = { id: 'prod-002' };
     localState.customer = { fullName: 'Johan' };
-    localState.delivery = { city: 'Bogotá' };
+    localState.delivery = { city: 'New York' };
     localState.transaction = { status: 'APPROVED' };
     localState.card = { number: '4242' };
     localState.error = 'something';
