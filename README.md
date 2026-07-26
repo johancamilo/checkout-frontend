@@ -55,8 +55,7 @@ payment confirmation.
 - **HTTP client:** Axios
 - **Styling:** SCSS with shared `_variables.scss` / `_mixins.scss`, flexbox/grid
   layouts, mobile-first breakpoints
-- **Testing:** Vitest + `@vue/test-utils` (Vite-native equivalent of Jest,
-  same `describe`/`it`/`expect` API)
+- **Testing:** Jest + `@vue/vue3-jest` + `@vue/test-utils`
 - **Build tool:** Vite
 
 ## Getting Started
@@ -115,7 +114,7 @@ on the client.
 ## Testing & Coverage
 
 ```bash
-npm run test        # unit tests (Vitest)
+npm run test        # unit tests (Jest)
 npm run test:cov    # unit tests with coverage report
 ```
 
@@ -131,9 +130,28 @@ What's covered:
 - All 4 views — rendering, form validation, navigation guards, and the
   approved/declined/error result states
 
-> Run `npm run test:cov` and check the terminal / `coverage/index.html`
+> Run `npm run test:cov` and check the terminal / `coverage/lcov-report/index.html`
 > report locally before submitting — coverage numbers should be confirmed
 > against your own environment.
+
+------------------------|---------|----------|---------|---------|-------------------
+File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------------|---------|----------|---------|---------|-------------------
+All files               |   99.13 |    98.12 |   96.92 |   99.09 |                   
+ services               |     100 |      100 |     100 |     100 |                   
+  card-validators.js    |     100 |      100 |     100 |     100 |                   
+  checkout.service.js   |     100 |      100 |     100 |     100 |                   
+ store/modules/checkout |     100 |      100 |     100 |     100 |                   
+  actions.js            |     100 |      100 |     100 |     100 |                   
+  getters.js            |     100 |      100 |     100 |     100 |                   
+  mutations.js          |     100 |      100 |     100 |     100 |                   
+  state.js              |     100 |      100 |     100 |     100 |                   
+ views                  |   98.37 |     97.7 |      95 |   98.37 |                   
+  PaymentView.vue       |   98.36 |    99.36 |   96.87 |   98.36 | 317               
+  ProductView.vue       |     100 |      100 |     100 |     100 |                   
+  ResultView.vue        |   94.44 |    85.71 |   66.66 |   94.44 | 110               
+  SummaryView.vue       |     100 |    94.11 |     100 |     100 | 144,148           
+------------------------|---------|----------|---------|---------|-------------------
 
 ## Responsive Design
 

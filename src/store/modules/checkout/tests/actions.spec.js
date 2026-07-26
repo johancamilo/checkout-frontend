@@ -1,23 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import actions from '../actions';
 import { checkoutService } from '@/services/checkout.service';
 
-vi.mock('@/services/checkout.service', () => ({
+jest.mock('@/services/checkout.service', () => ({
   checkoutService: {
-    getProduct: vi.fn(),
-    createTransaction: vi.fn(),
-    getTransaction: vi.fn(),
-    confirmPayment: vi.fn(),
+    getProduct: jest.fn(),
+    createTransaction: jest.fn(),
+    getTransaction: jest.fn(),
+    confirmPayment: jest.fn(),
   },
 }));
 
 function makeCommit() {
-  return vi.fn();
+  return jest.fn();
 }
 
 describe('checkout actions', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('fetchProduct', () => {

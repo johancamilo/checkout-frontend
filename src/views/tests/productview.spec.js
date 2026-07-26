@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import ProductView from '../ProductView.vue';
 
-function createTestStore({ state = {}, fetchProduct = vi.fn() } = {}) {
+function createTestStore({ state = {}, fetchProduct = jest.fn() } = {}) {
   return createStore({
     modules: {
       checkout: {
@@ -22,7 +21,7 @@ function createTestStore({ state = {}, fetchProduct = vi.fn() } = {}) {
   });
 }
 
-function mountView({ store, routerPush = vi.fn(), productId = 'prod-002' } = {}) {
+function mountView({ store, routerPush = jest.fn(), productId = 'prod-002' } = {}) {
   return mount(ProductView, {
     global: {
       plugins: [store],
@@ -36,11 +35,11 @@ function mountView({ store, routerPush = vi.fn(), productId = 'prod-002' } = {})
 
 describe('ProductView', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('dispatches fetchProduct with the productId from the route on created', () => {
-    const fetchProduct = vi.fn();
+    const fetchProduct = jest.fn();
     const store = createTestStore({ fetchProduct });
 
     mountView({ store, productId: 'prod-002' });
@@ -115,7 +114,7 @@ describe('ProductView', () => {
       imageUrl: 'x.jpg',
     };
     const store = createTestStore({ state: { product } });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });
 
     await wrapper.find('button.btn--primary').trigger('click');

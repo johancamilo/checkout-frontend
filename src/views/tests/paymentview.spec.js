@@ -1,12 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import PaymentView from '../PaymentView.vue';
 
 function createTestStore({
   state = {},
-  createTransaction = vi.fn(),
-  setCardData = vi.fn(),
+  createTransaction = jest.fn(),
+  setCardData = jest.fn(),
 } = {}) {
   return createStore({
     modules: {
@@ -19,7 +18,7 @@ function createTestStore({
   });
 }
 
-function mountView({ store, routerPush = vi.fn(), productId = 'prod-002' } = {}) {
+function mountView({ store, routerPush = jest.fn(), productId = 'prod-002' } = {}) {
   return mount(PaymentView, {
     global: {
       plugins: [store],
@@ -65,7 +64,7 @@ async function fillValidForm(wrapper) {
 
 describe('PaymentView', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('disables the submit button when the form is empty/invalid', () => {
@@ -130,7 +129,7 @@ describe('PaymentView', () => {
   });
 
   it('does not submit when the form is invalid', async () => {
-    const createTransaction = vi.fn();
+    const createTransaction = jest.fn();
     const store = createTestStore({ createTransaction });
     const wrapper = mountView({ store });
 
@@ -140,10 +139,10 @@ describe('PaymentView', () => {
   });
 
   it('creates the transaction, stores the card and navigates to summary on a valid submit', async () => {
-    const createTransaction = vi.fn().mockResolvedValue({ transactionId: 'tx-1' });
-    const setCardData = vi.fn();
+    const createTransaction = jest.fn().mockResolvedValue({ transactionId: 'tx-1' });
+    const setCardData = jest.fn();
     const store = createTestStore({ createTransaction, setCardData });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });
 
     await fillValidForm(wrapper);
@@ -155,7 +154,7 @@ describe('PaymentView', () => {
       expect.anything(),
       expect.objectContaining({
         customer: expect.objectContaining({ fullName: 'Jane Doe' }),
-        delivery: expect.objectContaining({ addressLine: 'Calle 123 #45-67' }),
+        delivery: expect.objectContaining({ addressLine: '123 Main Street' }),
         quantity: 1,
       }),
     );
@@ -170,11 +169,11 @@ describe('PaymentView', () => {
   });
 
   it('shows a submit error and does not navigate when the backend rejects the transaction', async () => {
-    const createTransaction = vi.fn().mockRejectedValue({
+    const createTransaction = jest.fn().mockRejectedValue({
       response: { data: { message: 'Insufficient stock' } },
     });
     const store = createTestStore({ createTransaction });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush });
 
     await fillValidForm(wrapper);
@@ -187,7 +186,7 @@ describe('PaymentView', () => {
   });
 
   it('falls back to a generic submit error message when the response has no message', async () => {
-    const createTransaction = vi.fn().mockRejectedValue(new Error('network down'));
+    const createTransaction = jest.fn().mockRejectedValue(new Error('network down'));
     const store = createTestStore({ createTransaction });
     const wrapper = mountView({ store });
 
@@ -199,9 +198,59 @@ describe('PaymentView', () => {
     expect(wrapper.find('.submit-error').text()).toBe('The transaction could not be created');
   });
 
+  it('marks each field as touched on blur', async () => {
+    const store = createTestStore();
+    const wrapper = mountView({ store });
+
+    const blurTargets = [
+      ['input[placeholder="12"]', 'expiry'],
+      ['input[placeholder="29"]', 'expiry'],
+      ['input[placeholder="123"]', 'cvc'],
+      ['input[placeholder="As shown on the card (min. 5 characters)"]', 'cardHolder'],
+      ['input[placeholder="John Doe"]', 'fullName'],
+      ['input[placeholder="juan@email.com"]', 'email'],
+      ['input[placeholder="3001234567"]', 'phoneNumber'],
+      ['input[placeholder="1234567890"]', 'documentNumber'],
+      ['input[placeholder="123 Main Street"]', 'addressLine'],
+    ];
+
+    for (const [selector, key] of blurTargets) {
+      await wrapper.find(selector).trigger('blur');
+      expect(wrapper.vm.touched[key]).toBe(true);
+    }
+
+    const newYorkInputs = wrapper.findAll('input[placeholder="New York"]');
+    await newYorkInputs[0].trigger('blur');
+    expect(wrapper.vm.touched.city).toBe(true);
+    await newYorkInputs[1].trigger('blur');
+    expect(wrapper.vm.touched.region).toBe(true);
+  });
+
+  it('pads a single-digit expiry month/year to two digits on blur', async () => {
+    const store = createTestStore();
+    const wrapper = mountView({ store });
+
+    await wrapper.find('input[placeholder="12"]').setValue('1');
+    await wrapper.find('input[placeholder="12"]').trigger('blur');
+    expect(wrapper.vm.card.expMonth).toBe('01');
+
+    await wrapper.find('input[placeholder="29"]').setValue('9');
+    await wrapper.find('input[placeholder="29"]').trigger('blur');
+    expect(wrapper.vm.card.expYear).toBe('09');
+  });
+
+  it('does not pad an expiry month/year that already has 2 digits', async () => {
+    const store = createTestStore();
+    const wrapper = mountView({ store });
+
+    await wrapper.find('input[placeholder="12"]').setValue('12');
+    await wrapper.find('input[placeholder="12"]').trigger('blur');
+    expect(wrapper.vm.card.expMonth).toBe('12');
+  });
+
   it('navigates back to the product view when "Back to product" is clicked', async () => {
     const store = createTestStore();
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });
 
     await wrapper.find('.back-link').trigger('click');

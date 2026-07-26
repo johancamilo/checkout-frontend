@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import {
   isValidLuhn,
   detectCardBrand,
@@ -39,6 +38,10 @@ describe('isValidLuhn', () => {
   it('covers the branch where the doubled digit does NOT exceed 9', () => {
     // All "1"s double to 2 (never >9), exercising the opposite branch of 4242...
     expect(isValidLuhn('1111111111111111')).toBe(false);
+  });
+
+  it('validates a card number whose doubled digits exceed 9 (subtraction branch)', () => {
+    expect(isValidLuhn('5555555555554444')).toBe(true);
   });
 });
 
@@ -87,6 +90,16 @@ describe('isFutureExpiry', () => {
 
   it('rejects a past year', () => {
     expect(isFutureExpiry('01', '20')).toBe(false);
+  });
+
+  it('rejects a card that expired earlier this same year', () => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    if (currentMonth === 1) return; // no earlier month exists in January
+    const yy = String(currentYear).slice(-2);
+    const pastMonth = String(currentMonth - 1).padStart(2, '0');
+    expect(isFutureExpiry(pastMonth, yy)).toBe(false);
   });
 });
 

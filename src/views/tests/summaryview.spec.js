@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import SummaryView from '../SummaryView.vue';
@@ -15,10 +14,16 @@ const CUSTOMER = {
   phoneNumber: '3001234567',
 };
 const DELIVERY = { addressLine: 'Calle 123 #45-67', city: 'Bogota', region: 'Cundinamarca' };
-const TRANSACTION = { transactionId: 'tx-1', totalAmountInCents: 53800000, deliveryFeeInCents: 800000 };
+const TRANSACTION = {
+  transactionId: 'tx-1',
+  productAmountInCents: 45000000,
+  baseFeeInCents: 500000,
+  deliveryFeeInCents: 800000,
+  totalAmountInCents: 46300000,
+};
 const CARD = { number: '4242424242424242' };
 
-function createTestStore({ state = {}, confirmPayment = vi.fn() } = {}) {
+function createTestStore({ state = {}, confirmPayment = jest.fn() } = {}) {
   return createStore({
     modules: {
       checkout: {
@@ -38,7 +43,7 @@ function createTestStore({ state = {}, confirmPayment = vi.fn() } = {}) {
   });
 }
 
-function mountView({ store, routerPush = vi.fn(), routerReplace = vi.fn(), productId = 'prod-002' } = {}) {
+function mountView({ store, routerPush = jest.fn(), routerReplace = jest.fn(), productId = 'prod-002' } = {}) {
   return mount(SummaryView, {
     global: {
       plugins: [store],
@@ -52,12 +57,12 @@ function mountView({ store, routerPush = vi.fn(), routerReplace = vi.fn(), produ
 
 describe('SummaryView', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('redirects to the payment view when there is no card in memory', () => {
     const store = createTestStore({ state: { transaction: TRANSACTION, card: null } });
-    const routerReplace = vi.fn();
+    const routerReplace = jest.fn();
 
     mountView({ store, routerReplace, productId: 'prod-002' });
 
@@ -69,7 +74,7 @@ describe('SummaryView', () => {
 
   it('redirects to the payment view when there is no transaction', () => {
     const store = createTestStore({ state: { card: CARD, transaction: null } });
-    const routerReplace = vi.fn();
+    const routerReplace = jest.fn();
 
     mountView({ store, routerReplace });
 
@@ -88,7 +93,7 @@ describe('SummaryView', () => {
         delivery: DELIVERY,
       },
     });
-    const routerReplace = vi.fn();
+    const routerReplace = jest.fn();
 
     mountView({ store, routerReplace });
 
@@ -123,18 +128,19 @@ describe('SummaryView', () => {
     expect(wrapper.text()).toContain(CUSTOMER.email);
 
     const totals = wrapper.findAll('.totals-row');
-    expect(totals[0].text()).toContain(formatMoney(TRANSACTION.totalAmountInCents - TRANSACTION.deliveryFeeInCents));
-    expect(totals[1].text()).toContain(formatMoney(TRANSACTION.deliveryFeeInCents));
-    expect(totals[2].text()).toContain(formatMoney(TRANSACTION.totalAmountInCents));
+    expect(totals[0].text()).toContain(formatMoney(TRANSACTION.productAmountInCents));
+    expect(totals[1].text()).toContain(formatMoney(TRANSACTION.baseFeeInCents));
+    expect(totals[2].text()).toContain(formatMoney(TRANSACTION.deliveryFeeInCents));
+    expect(totals[3].text()).toContain(formatMoney(TRANSACTION.totalAmountInCents));
   });
 
   it('confirms the payment with the in-memory card and navigates to the result view', async () => {
-    const confirmPayment = vi.fn().mockResolvedValue({ transactionId: 'tx-1', status: 'APPROVED' });
+    const confirmPayment = jest.fn().mockResolvedValue({ transactionId: 'tx-1', status: 'APPROVED' });
     const store = createTestStore({
       confirmPayment,
       state: { card: CARD, transaction: TRANSACTION, product: PRODUCT, customer: CUSTOMER, delivery: DELIVERY },
     });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });
 
     await wrapper.find('button.btn--primary').trigger('click');
@@ -149,14 +155,14 @@ describe('SummaryView', () => {
   });
 
   it('shows a submit error and does not navigate when the payment confirmation fails', async () => {
-    const confirmPayment = vi.fn().mockRejectedValue({
+    const confirmPayment = jest.fn().mockRejectedValue({
       response: { data: { message: 'Gateway timeout' } },
     });
     const store = createTestStore({
       confirmPayment,
       state: { card: CARD, transaction: TRANSACTION, product: PRODUCT, customer: CUSTOMER, delivery: DELIVERY },
     });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush });
 
     await wrapper.find('button.btn--primary').trigger('click');
@@ -168,7 +174,7 @@ describe('SummaryView', () => {
   });
 
   it('falls back to a generic error message when the response has no message', async () => {
-    const confirmPayment = vi.fn().mockRejectedValue(new Error('network down'));
+    const confirmPayment = jest.fn().mockRejectedValue(new Error('network down'));
     const store = createTestStore({
       confirmPayment,
       state: { card: CARD, transaction: TRANSACTION, product: PRODUCT, customer: CUSTOMER, delivery: DELIVERY },
@@ -186,7 +192,7 @@ describe('SummaryView', () => {
     const store = createTestStore({
       state: { card: CARD, transaction: TRANSACTION, product: PRODUCT, customer: CUSTOMER, delivery: DELIVERY },
     });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });
 
     await wrapper.find('.back-link').trigger('click');

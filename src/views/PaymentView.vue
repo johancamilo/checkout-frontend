@@ -317,6 +317,7 @@ export default {
       const digits = event.target.value.replace(/\D/g, '').slice(0, 19);
       this.card.number = digits;
       this.cardNumberDisplay = formatCardNumber(digits);
+      this.touched.number = true;
     },
     goBack() {
       this.$router.push({ name: 'product', params: { productId: this.$route.params.productId } });

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { loadFromStorage, STORAGE_KEY } from '../state';
 
 describe('loadFromStorage', () => {

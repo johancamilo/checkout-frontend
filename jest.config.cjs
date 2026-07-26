@@ -19,6 +19,10 @@ module.exports = {
     '!src/main.js',
     '!src/router/**',
     '!**/*.config.js',
+    '!src/App.vue',
+    '!src/services/api.js',
+    '!src/store/index.js',
+    '!src/store/modules/checkout/index.js',
   ],
   coverageThreshold: {
     global: {

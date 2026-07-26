@@ -29,5 +29,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "sass": "^1.102.0",
     "vite": "^8.1.1"
-  }
+  },
+  "browserslist": [
+    "node 20"
+  ]
 }

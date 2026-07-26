@@ -36,7 +36,7 @@
           <span>{{ formatMoney(transaction.productAmountInCents) }}</span>
         </div>
         <div class="totals-row">
-          <span>Fee base</span>
+          <span>Base fee</span>
           <span>{{ formatMoney(transaction.baseFeeInCents) }}</span>
         </div>
         <div class="totals-row">

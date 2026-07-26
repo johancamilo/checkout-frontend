@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import ResultView from '../ResultView.vue';
 
-function createTestStore({ state = {}, resetCheckout = vi.fn() } = {}) {
+function createTestStore({ state = {}, resetCheckout = jest.fn() } = {}) {
   return createStore({
     modules: {
       checkout: {
@@ -15,7 +14,7 @@ function createTestStore({ state = {}, resetCheckout = vi.fn() } = {}) {
   });
 }
 
-function mountView({ store, routerPush = vi.fn(), productId = 'prod-002' } = {}) {
+function mountView({ store, routerPush = jest.fn(), productId = 'prod-002' } = {}) {
   return mount(ResultView, {
     global: {
       plugins: [store],
@@ -37,7 +36,7 @@ const money = (cents) =>
 
 describe('ResultView', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('shows a fallback message with a link home when there is no transaction', () => {
@@ -94,9 +93,9 @@ describe('ResultView', () => {
 
   it('resets the checkout and navigates back to the product page on "Back to product"', async () => {
     const transaction = { transactionId: 'tx-1', status: 'APPROVED', totalAmountInCents: 1000 };
-    const resetCheckout = vi.fn();
+    const resetCheckout = jest.fn();
     const store = createTestStore({ resetCheckout, state: { transaction } });
-    const routerPush = vi.fn();
+    const routerPush = jest.fn();
     const wrapper = mountView({ store, routerPush, productId: 'prod-002' });
 
     await wrapper.find('button.btn--primary').trigger('click');
