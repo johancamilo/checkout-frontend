@@ -23,17 +23,53 @@
   padding: $spacing-xl 0;
 }
 
+@keyframes card-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .summary-card {
   @include card;
   padding: $spacing-md;
   margin-bottom: $spacing-md;
+  border-left: 3px solid transparent;
+  animation: card-fade-up 0.35s ease both;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    border-left-color: $color-primary;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  }
+
+  &:nth-of-type(1) { animation-delay: 0s; }
+  &:nth-of-type(2) { animation-delay: 0.06s; }
+  &:nth-of-type(3) { animation-delay: 0.12s; }
 
   h2 {
-    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    font-size: 0.8rem;
     margin: 0 0 $spacing-sm;
     color: $color-text-muted;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $color-primary;
+      flex-shrink: 0;
+    }
   }
 
   p {
@@ -48,7 +84,7 @@
 
 .product-row {
   display: flex;
-  gap: $spacing-sm;
+  gap: $spacing-md;
   align-items: center;
 
   img {
@@ -56,6 +92,8 @@
     height: 64px;
     object-fit: cover;
     border-radius: $radius-sm;
+    border: 1px solid $color-border;
+    flex-shrink: 0;
   }
 
   &__name {
@@ -71,12 +109,14 @@
 .totals-row {
   display: flex;
   justify-content: space-between;
-  padding: 4px 0;
+  padding: 6px 0;
+  font-size: 0.95rem;
 
   &--total {
     font-weight: 700;
-    font-size: 1.1rem;
-    border-top: 1px solid $color-border;
+    font-size: 1.25rem;
+    color: $color-primary;
+    border-top: 1px dashed $color-border;
     margin-top: $spacing-xs;
     padding-top: $spacing-sm;
   }
@@ -93,18 +133,31 @@
 
 .btn {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border: none;
   border-radius: $radius-md;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 
   &--primary {
-    background: $color-primary;
+    background: linear-gradient(135deg, $color-primary-light, $color-primary);
     color: white;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba($color-primary, 0.4);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
 
     &:disabled {
       background: #999;
+      box-shadow: none;
       cursor: not-allowed;
     }
   }

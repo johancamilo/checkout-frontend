@@ -13,38 +13,104 @@
   color: $color-text-muted;
 }
 
+@keyframes result-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes icon-ring-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--ring-start-color);
+  }
+  100% {
+    box-shadow: 0 0 0 16px var(--ring-end-color);
+  }
+}
+
 .result-card {
   @include card;
+  position: relative;
+  overflow: hidden;
   text-align: center;
   padding: $spacing-xl $spacing-md;
+  animation: result-pop-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    width: 260px;
+    height: 260px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    opacity: 0.35;
+    pointer-events: none;
+  }
 
   .icon {
-    width: 56px;
-    height: 56px;
-    line-height: 56px;
+    position: relative;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
     border-radius: 50%;
-    font-size: 1.6rem;
+    font-size: 1.75rem;
     font-weight: 700;
     margin: 0 auto $spacing-md;
     color: white;
+    z-index: 1;
+    box-shadow: 0 8px 20px -6px currentColor;
+    animation: icon-ring-pulse 1.6s ease-out 0.3s 2;
+  }
+
+  h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 $spacing-xs;
   }
 
   .message {
+    position: relative;
+    z-index: 1;
     color: $color-text-muted;
     margin-bottom: $spacing-md;
   }
 
-  &--approved .icon {
-    background: $color-success;
+  &--approved {
+    .icon {
+      background: linear-gradient(155deg, lighten($color-success, 8%), $color-success);
+      color: $color-success;
+      --ring-start-color: #{rgba($color-success, 0.35)};
+      --ring-end-color: #{rgba($color-success, 0)};
+    }
+    &::before {
+      background: radial-gradient(circle, rgba($color-success, 0.5), transparent 70%);
+    }
   }
 
-  &--declined .icon,
-  &--error .icon {
-    background: $color-error;
+  &--declined,
+  &--error {
+    .icon {
+      background: linear-gradient(155deg, lighten($color-error, 8%), $color-error);
+      color: $color-error;
+      --ring-start-color: #{rgba($color-error, 0.35)};
+      --ring-end-color: #{rgba($color-error, 0)};
+    }
+    &::before {
+      background: radial-gradient(circle, rgba($color-error, 0.45), transparent 70%);
+    }
   }
 }
 
 .details {
+  position: relative;
+  z-index: 1;
   border-top: 1px solid $color-border;
   border-bottom: 1px solid $color-border;
   padding: $spacing-sm 0;
@@ -54,24 +120,52 @@
 .detail-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 0.9rem;
-  padding: 4px 0;
+  padding: 6px 0;
 
   span:first-child {
     color: $color-text-muted;
   }
+
+  span:last-child {
+    font-weight: 600;
+    text-align: right;
+  }
+
+  &:first-child span:last-child {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    font-weight: 400;
+    word-break: break-all;
+    max-width: 60%;
+  }
 }
 
 .btn {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border: none;
   border-radius: $radius-md;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 
   &--primary {
-    background: $color-primary;
+    background: linear-gradient(135deg, $color-primary-light, $color-primary);
     color: white;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba($color-primary, 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
   }
 }

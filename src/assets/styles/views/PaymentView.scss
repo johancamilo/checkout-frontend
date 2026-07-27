@@ -153,18 +153,31 @@ label {
 
 .btn {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border: none;
   border-radius: $radius-md;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 
   &--primary {
-    background: $color-primary;
+    background: linear-gradient(135deg, $color-primary-light, $color-primary);
     color: white;
+    box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba($color-primary, 0.4);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
 
     &:disabled {
       background: #999;
+      box-shadow: none;
       cursor: not-allowed;
     }
   }
